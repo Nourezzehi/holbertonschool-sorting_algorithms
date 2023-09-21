@@ -1,16 +1,19 @@
 #include "sort.h"
 
 /**
- * swap - swap two value
+ * swap_print - swap two value
  * @a: first value
  * @b: second value
+ * @array: a pointer to the array to print
+ * @size: array's size
 */
 
-void swap(int *a, int *b)
+void swap_print(int *array, int *a, int *b, size_t size)
 {
 	int temp = *a;
 	(*a) = (*b);
 	(*b) = temp;
+	print_array(array, size);
 }
 
 /**
@@ -24,23 +27,20 @@ void swap(int *a, int *b)
 
 int partition(int *arr, int low, int high, size_t size)
 {
-	int pivot = arr[high], i = low - 1, j;
+	int pivot = arr[high], i = low, j;
 
 	for (j = low; j <= high - 1; j++)
 	{
-		if (arr[j] < pivot)
+		if (arr[j] <= pivot)
 		{
+			if (i != j)
+				swap_print(arr, &arr[j], &arr[i], size);
 			i++;
-			swap(&arr[i], &arr[j]);
-			print_array(arr, size);
 		}
 	}
-	if (arr[i + 1] != arr[high])
-	{
-		swap(&arr[i + 1], &arr[high]);
-		print_array(arr, size);
-	}
-	return (i + 1);
+	if (i != high)
+		swap_print(arr, &arr[high], &arr[i], size);
+	return (i);
 }
 
 /**
@@ -49,7 +49,6 @@ int partition(int *arr, int low, int high, size_t size)
  * @low: left index
  * @high: right index
  * @size: array's size
- * ]size: array's size
 */
 
 void quickSort(int *arr, int low, int high, size_t size)
